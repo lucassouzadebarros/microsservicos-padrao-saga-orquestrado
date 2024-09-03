@@ -15,7 +15,7 @@ Microsserviços Padrão Saga Orquestrado
 - [Arquitetura Proposta](#arquitetura-proposta)
 - [Descrição](#Descrição)
 - [Objetivos](#Objetivo)
-
+- [Instalação](#instalação)
 
 
 
@@ -45,4 +45,36 @@ Microsserviços Padrão Saga Orquestrado
 - Implementar microsserviços seguindo o padrão saga orquestrado.
 - Facilitar a comunicação e o gerenciamento entre microsserviços.
 - Integrar com bancos de dados e sistemas de mensageria de maneira eficiente.
+
+
+## Pré-requisitos
+- Java 17 ou superior
+- Docker
+- Maven
+
+## Instalação
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/lucassouzadebarros/hexagonal-architecture.git    
+    ```
+2. Executar com Docker Compose:
+
+- Certifique-se de que você tem o Docker e o Docker Compose instalados.
+- Navegue até o diretório do projeto onde o arquivo docker-compose.yml está localizado.
+- Execute o comando Docker Compose para subir os serviços utilizados pela as aplicações.
+
+    ```bash
+    docker-compose up -d
+    ```
+- Para parar os containers, use:
+     ```bash
+    docker-compose down
+    ```
+     
+4. Execute cada aplicação:
+    ```bash
+    mvn spring-boot:run
+    ```  
+
+  
   
