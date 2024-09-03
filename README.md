@@ -19,3 +19,16 @@ Microsserviços Padrão Saga Orquestrado
 - [Instalação](#instalação)
 - [Contribuição](#contribuição)
 - [Contato](#contato)
+
+
+  ## Sobre o Projeto
+  O padrão Saga orquestrado é uma abordagem onde um controlador central coordena as transações dos serviços envolvidos na saga. Esse controlador diz o que cada serviço deve fazer, gerenciando a sequência de processos e 
+  mantendo a consistência dos dados em ambientes de microserviços.
+
+  ## Objetivo
+- Implementar microsserviços seguindo o padrão saga orquestrado.
+- Facilitar a comunicação e o gerenciamento entre microsserviços.
+- Integrar com bancos de dados e sistemas de mensageria de maneira eficiente.
+
+  ## Descrição
+  
