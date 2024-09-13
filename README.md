@@ -100,8 +100,8 @@ As aplicações executarão nas seguintes portas:
 - Apache Kafka: 9092
 - Redpanda Console: 8081
 - PostgreSQL (Product-DB): 5432
-- PostgreSQL (Payment-DB): 5433
-- PostgreSQL (Inventory-DB): 5434
+- PostgreSQL (Payment-DB): 5438
+- PostgreSQL (Inventory-DB): 5439
 - MongoDB (Order-DB): 27017
 
 ## Acessando tópicos com Redpanda Console
