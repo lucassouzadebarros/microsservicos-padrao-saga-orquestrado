@@ -20,7 +20,7 @@ Microsserviços Padrão Saga Orquestrado
 - [Acessando tópicos com Redpanda Console](#acessando-tópicos-com-redpanda-console)
 - [Dados da API](#dados-da-api)
 - [Produtos registrados e seu estoque](#produtos-registrados-e-seu-estoque)
-- [Endpoint para visualizar a saga](#endpoint-para-visualizar-a-saga:)
+- [Endpoint para visualizar a saga](#endpoint-para-visualizar-a-saga)
 
 
 
