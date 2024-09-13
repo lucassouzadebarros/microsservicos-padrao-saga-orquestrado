@@ -16,6 +16,11 @@ Microsserviços Padrão Saga Orquestrado
 - [Descrição](#Descrição)
 - [Objetivos](#Objetivo)
 - [Instalação](#instalação)
+- [Acessando a aplicação](#acessando-a-aplicação)
+- [Acessando tópicos com Redpanda Console](#acessando-tópicos-com-redpanda-console)
+- [Dados da API](#dados-da-api)
+- [Produtos registrados e seu estoque](#produtos-registrados-e-seu-estoque)
+- [Endpoint para visualizar a saga:](#endpoint-para-visualizar-a-saga:)
 
 
 
@@ -50,7 +55,7 @@ Microsserviços Padrão Saga Orquestrado
 ## Pré-requisitos
 - Java 17 ou superior
 - Docker
-- Maven
+- Gradle 7.6 ou superior
 
 ## Instalação
 1. Clone o repositório:
@@ -76,5 +81,179 @@ Microsserviços Padrão Saga Orquestrado
     mvn spring-boot:run
     ```  
 
-  
+## Acessando a aplicação
+
+Para acessar as aplicações e realizar um pedido, basta acessar a URL:
+
+http://localhost:3000/swagger-ui.html
+
+Você chegará nesta página:
+![image](https://github.com/user-attachments/assets/9272b983-766d-4f97-abeb-8ac7f8c22766)
+
+As aplicações executarão nas seguintes portas:
+
+- Order-Service: 3000
+- Orchestrator-Service: 8080
+- Product-Validation-Service: 8090
+- Payment-Service: 8091
+- Inventory-Service: 8092
+- Apache Kafka: 9092
+- Redpanda Console: 8081
+- PostgreSQL (Product-DB): 5432
+- PostgreSQL (Payment-DB): 5433
+- PostgreSQL (Inventory-DB): 5434
+- MongoDB (Order-DB): 27017
+
+## Acessando tópicos com Redpanda Console
+
+Para acessar o Redpanda Console e visualizar tópicos e publicar eventos, basta acessar:
+
+http://localhost:8081
+
+Você chegará nesta página:
+![image](https://github.com/user-attachments/assets/85a89ff7-5723-40f4-a786-a8cabed71f14)
+
+## Dados da API
+
+É necessário conhecer o payload de envio ao fluxo da saga, assim como os produtos cadastrados e suas quantidades.
+
+## Produtos registrados e seu estoque
+
+Existem 3 produtos iniciais cadastrados no serviço product-validation-service e suas quantidades disponíveis em inventory-service:
+
+- COMIC_BOOKS (4 em estoque)
+- BOOKS (2 em estoque)
+- MOVIES (5 em estoque)
+- MUSIC (9 em estoque)
+
+## Endpoint para iniciar a saga:
+
+POST http://localhost:3000/api/order
+
+Payload:
+
+ ```bash
+{
+  "products": [
+    {
+      "product": {
+        "code": "COMIC_BOOKS",
+        "unitValue": 15.50
+      },
+      "quantity": 3
+    },
+    {
+      "product": {
+        "code": "BOOKS",
+        "unitValue": 9.90
+      },
+      "quantity": 1
+    }
+  ]
+}
+    ```  
+
+Resposta:
+
+ ```bash
+{
+  "id": "64429e987a8b646915b3735f",
+  "products": [
+    {
+      "product": {
+        "code": "COMIC_BOOKS",
+        "unitValue": 15.5
+      },
+      "quantity": 3
+    },
+    {
+      "product": {
+        "code": "BOOKS",
+        "unitValue": 9.9
+      },
+      "quantity": 1
+    }
+  ],
+  "createdAt": "2023-04-21T14:32:56.335943085",
+  "transactionId": "1682087576536_99d2ca6c-f074-41a6-92e0-21700148b519"
+}
+    ```
+
+## Endpoint para visualizar a saga:
+
+É possível recuperar os dados da saga pelo orderId ou pelo transactionId, o resultado será o mesmo:
+
+GET http://localhost:3000/api/event?orderId=64429e987a8b646915b3735f
+
+GET http://localhost:3000/api/event?transactionId=1682087576536_99d2ca6c-f074-41a6-92e0-21700148b519
+
+Resposta:
+
+ ```bash
+{
+  "id": "64429e9a7a8b646915b37360",
+  "transactionId": "1682087576536_99d2ca6c-f074-41a6-92e0-21700148b519",
+  "orderId": "64429e987a8b646915b3735f",
+  "payload": {
+    "id": "64429e987a8b646915b3735f",
+    "products": [
+      {
+        "product": {
+          "code": "COMIC_BOOKS",
+          "unitValue": 15.5
+        },
+        "quantity": 3
+      },
+      {
+        "product": {
+          "code": "BOOKS",
+          "unitValue": 9.9
+        },
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 56.40,
+    "totalItems": 4,
+    "createdAt": "2023-04-21T14:32:56.335943085",
+    "transactionId": "1682087576536_99d2ca6c-f074-41a6-92e0-21700148b519"
+  },
+  "source": "ORCHESTRATOR",
+  "status": "SUCCESS",
+  "eventHistory": [
+    {
+      "source": "ORCHESTRATOR",
+      "status": "SUCCESS",
+      "message": "Saga started!",
+      "createdAt": "2023-04-21T14:32:56.78770516"
+    },
+    {
+      "source": "PRODUCT_VALIDATION_SERVICE",
+      "status": "SUCCESS",
+      "message": "Products are validated successfully!",
+      "createdAt": "2023-04-21T14:32:57.169378616"
+    },
+    {
+      "source": "PAYMENT_SERVICE",
+      "status": "SUCCESS",
+      "message": "Payment realized successfully!",
+      "createdAt": "2023-04-21T14:32:57.617624655"
+    },
+    {
+      "source": "INVENTORY_SERVICE",
+      "status": "SUCCESS",
+      "message": "Inventory updated successfully!",
+      "createdAt": "2023-04-21T14:32:58.139176809"
+    },
+    {
+      "source": "ORCHESTRATOR",
+      "status": "SUCCESS",
+      "message": "Saga finished successfully!",
+      "createdAt": "2023-04-21T14:32:58.248630293"
+    }
+  ],
+  "createdAt": "2023-04-21T14:32:58.28"
+}
+    ```
+
+
   
